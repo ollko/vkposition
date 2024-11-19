@@ -4,7 +4,7 @@
 FROM python:3.13-rc-slim
 
 # set work directory
-WORKDIR .
+WORKDIR /src
 
 # set env variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -15,5 +15,5 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # copy project
-RUN mkdir src
-COPY . ./src/
+WORKDIR /
+COPY . /src

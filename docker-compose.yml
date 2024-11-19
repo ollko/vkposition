@@ -5,7 +5,7 @@ services:
     build:
       context: ./fastapi-app
       dockerfile: Dockerfile
-    command: uvicorn src.web.main:app --host 0.0.0.0
+    command: uvicorn src.main:app --host 0.0.0.0
     volumes:
       - ./fastapi-app:/src/fastapi-app
     ports:
