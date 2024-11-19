@@ -5,8 +5,8 @@ services:
     build:
       context: ./fastapi-app
       dockerfile: Dockerfile
-    command: uvicorn src.main:app --host 0.0.0.0
+    command: uvicorn src.main:app --host 0.0.0.0 --reload
     volumes:
-      - ./fastapi-app:/src/.
+      - ./fastapi-app:/src
     ports:
       - 8008:8000
