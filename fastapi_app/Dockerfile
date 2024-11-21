@@ -4,7 +4,7 @@
 FROM python:3.13-rc-slim
 
 # set work directory
-WORKDIR /src
+WORKDIR /fastapi_app
 
 # set env variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -16,4 +16,4 @@ RUN pip install -r requirements.txt
 
 # copy project
 WORKDIR /
-COPY . /src
+COPY . /fastapi_app
