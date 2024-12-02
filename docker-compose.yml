@@ -5,7 +5,9 @@ services:
     build:
       context: ./fastapi_app
       dockerfile: Dockerfile
-    command: uvicorn fastapi_app.auth:app --host 0.0.0.0 --reload
+    command: uvicorn fastapi_app.main:app --host 0.0.0.0 --reload
+    environment:
+      - CRYPTID_UNIT_TEST=1
     volumes:
       - ./fastapi_app:/fastapi_app
     ports:

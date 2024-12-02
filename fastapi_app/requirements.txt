@@ -3,3 +3,5 @@ uvicorn
 python-jose
 passlib
 python-multipart
+jinja2
+bcrypt==3.2.2

@@ -1,5 +1,5 @@
 from fastapi_app.model.vkgroup import Group
-from fastapi_app.service import group as code
+from fastapi_app.service import vkgroup as code
 
 
 sample = Group(group_id=1,

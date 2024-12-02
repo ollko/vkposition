@@ -12,7 +12,10 @@ ENV PYTHONUNBUFFERED 1
 
 # install dependencies
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN apt-get update && \
+    apt-get -y upgrade && \
+    apt-get -y install sqlite3 && \
+    pip install -r requirements.txt
 
 # copy project
 WORKDIR /
