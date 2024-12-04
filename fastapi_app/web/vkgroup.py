@@ -9,7 +9,7 @@ router = APIRouter(prefix="/group")
 
 
 @router.get("/")
-def vkgroup_list(active: bool | None = None):
+def vkgroup_list(active: bool | None = None) -> list[VKGroup]:
     if active is not None:
         return service.get_all(active)
     else:

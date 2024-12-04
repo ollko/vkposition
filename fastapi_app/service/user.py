@@ -1,15 +1,16 @@
-from datetime import timedelta, datetime
+from passlib.context import CryptContext
+from datetime import datetime, timedelta, timezone
 import os
 from jose import jwt
 from fastapi_app.model.user import User
 
-if os.getenv("CRYPTID_UNIT_TEST"):
-    from fastapi_app.fake import user as data
-else:
-    from fastapi_app.data import user as data
 
+# if CRYPTID_UNIT_TEST := os.getenv("CRYPTID_UNIT_TEST"):
+#     from fastapi_app.fake import user as data
+# else:
+#     from fastapi_app.data import user as data
+from fastapi_app.data import user as data
 # --- Новые данные auth
-from passlib.context import CryptContext
 # Измените SECRET_KEY для среды эксплуатации!
 SECRET_KEY = "keep-it-secret-keep-it-safe"
 ALGORITHM = "HS256"
@@ -48,6 +49,7 @@ def get_current_user(token: str) -> User | None:
 
 def lookup_user(username: str) -> User | None:
     """Возврат совпадающего пользователя из базы данных для строки <name>"""
+    print(f"{username=}")
     if (user := data.get_one(username)):
         return user
     return None
@@ -67,7 +69,7 @@ def create_access_token(data: dict,
                         ):
     """Возвращение токена доступа JWT"""
     src = data.copy()
-    now = datetime.now(datetime.timezone.utc)
+    now = datetime.now(timezone.utc)
     if not expires:
         expires = timedelta(minutes=15)
     src.update({"exp": now + expires})
@@ -78,6 +80,7 @@ def create_access_token(data: dict,
 
 
 def get_all() -> list[User]:
+    print('service.user.get_all')
     return data.get_all()
 
 

@@ -24,6 +24,7 @@ def model_to_dict(user: User) -> dict:
 
 
 def get_one(name: str) -> User:
+    print(f'{name=}')
     qry = "select * from user where name=:name"
     params = {"name": name}
     curs.execute(qry, params)
@@ -46,7 +47,6 @@ def create(user: User, table: str = "user"):
             values
             (:name, :hash)"""
     params = model_to_dict(user)
-    print(f'{params=}')
     try:
         curs.execute(qry, params)
     except IntegrityError:

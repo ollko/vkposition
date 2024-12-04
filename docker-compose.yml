@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     command: uvicorn fastapi_app.main:app --host 0.0.0.0 --reload
     environment:
-      - CRYPTID_UNIT_TEST=1
+      - CRYPTID_UNIT_TEST=0
     volumes:
       - ./fastapi_app:/fastapi_app
     ports:

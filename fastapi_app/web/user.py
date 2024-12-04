@@ -1,4 +1,6 @@
 import os
+import logging
+from datetime import timedelta, timezone
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi_app.model.user import User
@@ -10,6 +12,7 @@ from fastapi_app.model.user import User
 from fastapi_app.service import user as service
 from fastapi_app.error import Missing, Duplicate
 
+logger = logging.getLogger(__name__)
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 router = APIRouter(prefix="/user")
@@ -18,10 +21,11 @@ router = APIRouter(prefix="/user")
 # Эта зависимость создает сообщение в каталоге
 # "/user/token" (из формы с именем пользователя и паролем)
 # и возвращает токен доступа.
-oauth2_dep = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_dep = OAuth2PasswordBearer(tokenUrl="user/token")
 
 
 def unauthed():
+    print('in unauthed')
     raise HTTPException(
         status_code=401,
         detail="Incorrect username or password",
@@ -37,12 +41,17 @@ async def create_access_token(
 ):
     """Получение имени пользователя и пароля
     из формы OAuth, возврат токена доступа"""
-    user = service.auth_user(form_data.username, form_data.password)
+    print('in create_access_token')
+    try:
+        user = service.auth_user(form_data.username, form_data.password)
+    except Missing as e:
+        logger.info(e.msg)
+        user = None
     if not user:
         unauthed()
     expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = service.create_access_token(
-        data={"sub": user.username}, expires=expires
+        data={"sub": user.name}, expires=expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
@@ -56,7 +65,7 @@ def get_access_token(token: str = Depends(oauth2_dep)) -> dict:
 
 
 @router.get("/")
-def get_all() -> list[User]:
+def get_all(token: str = Depends(oauth2_dep)) -> list[User]:
     return service.get_all()
 
 

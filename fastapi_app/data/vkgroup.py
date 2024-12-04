@@ -1,4 +1,4 @@
-from .init import curs
+from .init import curs, conn
 from fastapi_app.model.vkgroup import VKGroup
 
 curs.execute(
@@ -8,7 +8,7 @@ curs.execute(
 
 def row_to_model(row: tuple) -> VKGroup:
     (group_id, name, active) = row
-    return VKGroup(group_id, name, active)
+    return VKGroup(group_id=group_id, name=name, active=active)
 
 
 def model_to_dict(group: VKGroup) -> dict:
@@ -25,14 +25,15 @@ def get_one(group_id: str) -> VKGroup:
 def get_all() -> list[VKGroup]:
     q = "select * from vkgroup"
     curs.execute(q)
-    return [row_to_model(row) for row in curs.fetchall()]
+    return ([row_to_model(row) for row in curs.fetchall()])
 
 
 def create(group: VKGroup) -> VKGroup:
-    q = "insert into vkgroup values"
-    "(:group_id, :name, :active)"
+    q = '''insert into vkgroup values
+    (:group_id, :name, :active)'''
     params = model_to_dict(group)
     curs.execute(q, params)
+    conn.commit()
     return get_one(group.group_id)
 
 
