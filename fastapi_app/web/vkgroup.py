@@ -1,7 +1,7 @@
 
 from fastapi import APIRouter
 
-from fastapi_app.model.vkgroup import VKGroup
+from fastapi_app.model.vkgroup import VKGroup_, VKGroup
 # from fastapi_app.fake import group as service
 from fastapi_app.service import vkgroup as service
 
@@ -16,13 +16,19 @@ def vkgroup_list(active: bool | None = None) -> list[VKGroup]:
         return service.get_all()
 
 
-@router.get("/{vkgroup_id}/")
-def get_group(vkgroup_id: int):
-    return service.get_one(vkgroup_id)
+@router.get("/{item_field}/")
+def get_group_id(item_field):
+    print('In get_group_id')
+    try:
+        item_field = int(item_field)
+    except ValueError:
+        return service.get_one(name=item_field)
+    else:
+        return service.get_one(vkgroup_id=item_field)
 
 
 @router.post("/")
-def create_group(vkgroup: VKGroup) -> VKGroup:
+def create_group(vkgroup: VKGroup_) -> VKGroup:
     return service.create(vkgroup)
 
 

@@ -1,5 +1,5 @@
 from fastapi_app.model.user import User
-from .init import (conn, curs, get_db, IntegrityError)
+from ._init import (conn, curs, get_db, IntegrityError)
 from fastapi_app.error import Missing, Duplicate
 
 

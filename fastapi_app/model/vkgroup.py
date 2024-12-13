@@ -1,7 +1,9 @@
 from pydantic import BaseModel
 
 
-class VKGroup(BaseModel):
-    group_id: int
+class VKGroup_(BaseModel):
     name: str
-    active: bool
+
+
+class VKGroup(VKGroup_):
+    group_id: int

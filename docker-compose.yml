@@ -5,8 +5,8 @@ services:
       dockerfile: Dockerfile
     command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; uvicorn fastapi_app.main:app --host 0.0.0.0 --reload'
     environment:
-      - CRYPTID_UNIT_TEST=0
-      - DATABASE_URL=postgresql://fastapi_traefik:fastapi_traefik@db:5432/fastapi_traefik
+      - VKGROUP_UNIT_TEST=1
+      - POSTGRES_URL=postgresql://fastapi_traefik:fastapi_traefik@db:5432/fastapi_traefik
     volumes:
       - ./fastapi_app:/fastapi_app
     ports:
