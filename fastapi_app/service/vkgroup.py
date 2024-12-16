@@ -8,12 +8,9 @@ def get_all(active: bool | None = None) -> list[VKGroup]:
     return data.get_all()
 
 
-def get_one(vkgroup_id: int | None = None,
-            name: str | None = None) -> VKGroup | None:
+def get_one(vkgroup_id: int) -> VKGroup | None:
     if vkgroup_id:
-        return data.get_one(group_id=vkgroup_id)
-    elif name:
-        return data.get_one(name=name)
+        return data.get_one(vkgroup_id)
 
 
 def create(vkgroup: VKGroup_) -> VKGroup:

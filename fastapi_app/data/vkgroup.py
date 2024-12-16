@@ -1,39 +1,33 @@
+from pprint import pprint
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import joinedload, Session
 
 from .init import engine
-from fastapi_app.model.vkgroup import VKGroup_, VKGroup
+from fastapi_app.model.vkgroup import VKGroup_, VKGroup, VKGroupSchema
 from fastapi_app.ormmodel.vkgroup import VKGroup as OrmVKGroup
-
-
-def ormmodel_to_pymodel(ormgroup: OrmVKGroup) -> VKGroup:
-    return VKGroup(group_id=ormgroup.vkgroup_id,
-                   name=ormgroup.name)
 
 
 def pymodel_to_ormmodel(group: VKGroup_) -> OrmVKGroup:
     return OrmVKGroup(name=group.name)
 
 
-def get_one(group_id: int | None = None,
-            name: str | None = None) -> VKGroup:
+def get_one(vkgroup_id: int) -> VKGroup:
     with Session(engine) as session:
-        if group_id:
-            stmt = select(OrmVKGroup).where(OrmVKGroup.vkgroup_id == group_id)
-        elif name:
-            stmt = select(OrmVKGroup).where(OrmVKGroup.name == name)
-        group = session.scalars(stmt).first()
+        stmt = (select(OrmVKGroup).where(OrmVKGroup.vkgroup_id == vkgroup_id)
+                .options(joinedload(OrmVKGroup.queries))
+                )
+        group = session.scalars(stmt).unique().first()
         if group:
-            return ormmodel_to_pymodel(group)
-    return None
+            return VKGroupSchema.from_orm(group)
+        return None
 
 
-def get_all() -> list[VKGroup]:
+def get_all() -> list[VKGroupSchema]:
     with Session(engine) as session:
-        stmt = select(OrmVKGroup)
-        orm_groups = session.scalars(stmt).all()
-
-    return [ormmodel_to_pymodel(orm_group) for orm_group in orm_groups]
+        stmt = select(OrmVKGroup).options(joinedload(OrmVKGroup.queries))
+        groups = session.scalars(stmt).unique().all()
+        schema_group = [VKGroupSchema.from_orm(group) for group in groups]
+    return schema_group
 
 
 def create(group: VKGroup) -> VKGroup:
@@ -41,7 +35,7 @@ def create(group: VKGroup) -> VKGroup:
     with Session(engine) as session:
         session.add(orm_group)
         session.commit()
-    return get_one(name=group.name)
+        return VKGroup.from_orm(orm_group)
 
 
 # def modify(vkgroup: VKGroup) -> VKGroup:
