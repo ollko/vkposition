@@ -1,4 +1,3 @@
-from pprint import pprint
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload, Session
 
@@ -36,18 +35,6 @@ def create(group: VKGroup) -> VKGroup:
         session.add(orm_group)
         session.commit()
         return VKGroup.from_orm(orm_group)
-
-
-# def modify(vkgroup: VKGroup) -> VKGroup:
-#     q = """update group
-#             set group_id=:group_id,
-#             name=:name,
-#             active=:active,
-#             where group_id=:group_id_orig"""
-#     params = model_to_dict(vkgroup)
-#     params["group_id_orig"] = vkgroup.group_id
-#     _ = curs.execute(q, params)
-#     return get_one(vkgroup.group_id)
 
 
 # def delete(group: VKGroup) -> bool:

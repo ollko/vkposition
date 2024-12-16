@@ -13,7 +13,7 @@ def vkgroup_list() -> list[VKGroupSchema]:
 
 
 @router.get("/{vkgroup_id}/")
-def get_group_id(vkgroup_id):
+def get_group_id(vkgroup_id) -> VKGroupSchema:
     return service.get_one(vkgroup_id)
 
 
