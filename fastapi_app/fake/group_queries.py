@@ -1,4 +1,4 @@
-from fastapi_app.model.group_position import (
+from fastapi_app.model.position import (
     Position,
     PositionRow,
     PositionTable,

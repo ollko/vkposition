@@ -17,7 +17,7 @@ vkgroup_query = Table('vkgroup_query', Base.metadata,
 class VKGroup(Base):
     __tablename__ = 'vkgroup'
     vkgroup_id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
+    name = Column(String, nullable=False, unique=True)
     queries = relationship(
         "Query", secondary=vkgroup_query, back_populates='vkgroups')
 
@@ -25,19 +25,16 @@ class VKGroup(Base):
 class Query(Base):
     __tablename__ = 'query'
     query_id = Column(Integer, primary_key=True)
-    phrase = Column(String, nullable=False)
+    phrase = Column(String, nullable=False, unique=True)
     vkgroups = relationship("VKGroup", secondary=vkgroup_query,
                             back_populates='queries')
 
 
-parse_event = Table('parse_ivent', Base.metadata,
-                    Column('parse_ivent_id', Integer, primary_key=True),
-                    Column('vkgroup_id', ForeignKey(
-                        'vkgroup.vkgroup_id')),
-                    Column('query_id', ForeignKey(
-                        'query.query_id')),
-                    Column('position', Integer, nullable=False),
-                    Column('at_time', DateTime(timezone=True),
-                           nullable=False,
-                           server_default=func.now())
-                    )
+class Position(Base):
+    __tablename__ = 'position'
+    position_id = Column(Integer, primary_key=True)
+    vkgroup_id = Column(ForeignKey('vkgroup.vkgroup_id'))
+    query_id = Column(ForeignKey('query.query_id'))
+    position = Column(Integer, nullable=False)
+    created_at = Column(DateTime(timezone=True),
+                        nullable=False, server_default=func.now())

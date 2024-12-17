@@ -1,4 +1,4 @@
-from fastapi_app.model.group_position import PositionRow
+from fastapi_app.model.position import PositionRow
 
 
 _positions = [

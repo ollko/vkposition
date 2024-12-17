@@ -1,6 +1,6 @@
 from .base import Base
 from .user import users
-from .vkgroup import vkgroup_query, VKGroup, Query, parse_event
+from .vkgroup import vkgroup_query, VKGroup, Query, Position
 
 __all__ = (
     Base,
@@ -8,5 +8,5 @@ __all__ = (
     vkgroup_query,
     VKGroup,
     Query,
-    parse_event,
+    Position,
 )

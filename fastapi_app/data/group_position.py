@@ -1,5 +1,5 @@
 import os
-from fastapi_app.model.group_position import PositionRow
+from fastapi_app.model.position import PositionRow
 if os.getenv('VKGROUP_UNIT_TEST'):
     from fastapi_app.fake.group_position import _positions
 

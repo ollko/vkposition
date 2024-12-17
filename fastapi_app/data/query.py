@@ -12,7 +12,7 @@ def pymodel_to_ormmodel(query: Query_) -> OrmQuery:
 
 def get_one(query_id: int) -> Query:
     with Session(engine) as session:
-        stmt = (select(OrmQuery).where(OrmQuery.query_id == query_id)
+        stmt = (select(OrmQuery, query_id)
                 .options(joinedload(OrmQuery.vkgroups))
                 )
         query = session.scalars(stmt).unique().first()
