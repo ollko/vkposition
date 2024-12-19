@@ -1,0 +1,63 @@
+{% extends "__base.html" %}
+
+{% block title %}
+Проверка позиций ВК Групп
+{% endblock %}
+
+{% block content %}
+<div class="p-5 text-center bg-body-tertiary rounded-3">
+  <h1 class="text-body-emphasis">Проверка позиций ВК Групп</h1>
+
+  </br>
+
+  <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group" role="group" aria-label="First group">
+      <button type="button" class="btn btn-danger">Удалить выделенные группы</button>
+    </div>
+
+
+    <form method="post" action="/group/" class="form-inline">
+      <div class="form-group mx-sm-3 mb-2">
+        <input type="text" class="form-control" id="name" name="name" placeholder="Название Группы" required>
+      </div>
+      <button type="submit" class="btn btn-success mb-2">Добавить группу</button>
+        
+    </form>
+
+  </div>
+
+  </br>
+
+  <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">#</th>
+          <th scope="col">Группа</th>
+          <th scope="col">Данные</th>
+          <th scope="col">к Запросам</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in data%}
+        <tr>
+          <td>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="{{item.vkgroup_id}}" id="{{item.vkgroup_id}}">
+            </div>
+          </td>
+          <th scope="row">{{item.vkgroup_id}}</th>
+          <td>{{item.name}}</td>
+          <td>Otto</td>
+          <td>
+            <button class="btn btn-secondary px-4 rounded-pill" type="button" onclick="window.location.href='/group/{{item.vkgroup_id}}';">
+              к Запросам
+            </button>
+          </td>
+        </tr>
+        {% endfor%}
+      </tbody>
+    </table>
+</div>
+{% endblock content %}
+{% block js %}{% endblock js%}

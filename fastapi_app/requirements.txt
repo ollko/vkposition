@@ -8,3 +8,4 @@ bcrypt==3.2.2
 alembic==1.14.0
 psycopg2-binary==2.9.10
 pydantic-settings==2.6.1
+Jinja2

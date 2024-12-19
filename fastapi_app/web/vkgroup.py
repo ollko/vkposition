@@ -1,6 +1,6 @@
 
-from fastapi import APIRouter
-
+from fastapi import APIRouter, Form
+from fastapi.responses import RedirectResponse
 from fastapi_app.model.vkgroup import VKGroup_, VKGroup, VKGroupSchema
 from fastapi_app.service import vkgroup as service
 
@@ -18,8 +18,11 @@ def get_group_id(vkgroup_id) -> VKGroupSchema:
 
 
 @router.post("/")
-def create_group(vkgroup: VKGroup_) -> VKGroup:
-    return service.create(vkgroup)
+def create_group(
+        name: str = Form(...)):
+    vkgroup = VKGroup_(name=name)
+    service.create(vkgroup)
+    return RedirectResponse(url="/query/", status_code=303)
 
 
 @router.patch("/")
@@ -27,6 +30,6 @@ def modify(vkgroup: VKGroup) -> VKGroup:
     return service.modify(vkgroup)
 
 
-@router.delete("/{vkgroup_id}")
+@router.delete("/{vkgroup_id}/")
 def del_group(vkgroup_id: int):
     return service.delete(vkgroup_id)
