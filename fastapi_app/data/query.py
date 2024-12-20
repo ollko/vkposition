@@ -7,7 +7,7 @@ from fastapi_app.ormmodel.vkgroup import Query as OrmQuery
 
 
 def pymodel_to_ormmodel(query: Query_) -> OrmQuery:
-    return OrmQuery(name=query.phrase)
+    return OrmQuery(name=query.query)
 
 
 def get_one(query_id: int) -> Query:

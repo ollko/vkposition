@@ -16,13 +16,13 @@ class VKGroupSchema(VKGroup):
 
 
 class Query_(BaseModel):
-    phrase: str
+    query: str
 
 
 class Query(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     query_id: int
-    phrase: str
+    query: str
 
 
 class QuerySchema(Query):

@@ -25,7 +25,7 @@ class VKGroup(Base):
 class Query(Base):
     __tablename__ = 'query'
     query_id = Column(Integer, primary_key=True)
-    phrase = Column(String, nullable=False, unique=True)
+    query = Column(String, nullable=False, unique=True)
     vkgroups = relationship("VKGroup", secondary=vkgroup_query,
                             back_populates='queries')
 
