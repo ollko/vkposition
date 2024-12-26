@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from fastapi_app.model.position import Position_, Position
+from fastapi_app.model.vkgroup import Position_, Position
 from fastapi_app.service import position as service
 
 router = APIRouter(prefix="/position")

@@ -2,7 +2,7 @@ import os
 from fastapi import FastAPI, HTTPException, Request, Form, Depends
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
-from fastapi_app.web import groups_table
+from fastapi_app.web import index
 from fastapi_app.web import (
     position,
     vkgroup,
@@ -21,7 +21,7 @@ app.include_router(query.router)
 app.include_router(user.router)
 app.include_router(create_user.router)
 app.include_router(position.router)
-app.include_router(groups_table.router)
+app.include_router(index.router)
 
 
 @app.get("/")

@@ -1,18 +1,17 @@
+from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
 
-class VKGroup_(BaseModel):
-    name: str
+class Position_(BaseModel):
+    position: int
+    created_at: datetime
 
 
-class VKGroup(BaseModel):
+class Position(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-    vkgroup_id: int
-    name: str
-
-
-class VKGroupSchema(VKGroup):
-    queries: list['Query']
+    position_id: int
+    position: int
+    created_at: datetime
 
 
 class Query_(BaseModel):
@@ -26,4 +25,18 @@ class Query(BaseModel):
 
 
 class QuerySchema(Query):
-    vkgroups: list[VKGroup]
+    positions: list[Position]
+
+
+class VKGroup_(BaseModel):
+    name: str
+
+
+class VKGroup(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    vkgroup_id: int
+    name: str
+
+
+class VKGroupSchema(VKGroup):
+    queries: list[QuerySchema]

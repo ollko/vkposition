@@ -3,7 +3,11 @@ from sqlalchemy.orm import joinedload, Session
 
 from .init import engine
 from fastapi_app.model.vkgroup import VKGroup_, VKGroup, VKGroupSchema
-from fastapi_app.ormmodel.vkgroup import VKGroup as OrmVKGroup
+from fastapi_app.ormmodel.vkgroup import (
+    VKGroup as OrmVKGroup,
+    Query as OrmQuery,
+    Position as OrmPosition,
+)
 
 
 def pymodel_to_ormmodel(group: VKGroup_) -> OrmVKGroup:
@@ -17,15 +21,19 @@ def get_one(vkgroup_id: int) -> VKGroup:
                 )
         group = session.scalars(stmt).unique().first()
         if group:
-            return VKGroupSchema.from_orm(group)
+            return VKGroupSchema.model_validate(group)
         return None
 
 
 def get_all() -> list[VKGroupSchema]:
     with Session(engine) as session:
-        stmt = select(OrmVKGroup).options(joinedload(OrmVKGroup.queries))
+        stmt = (select(OrmVKGroup)
+                .join(OrmVKGroup.queries)
+
+                )
         groups = session.scalars(stmt).unique().all()
-        schema_group = [VKGroupSchema.from_orm(group) for group in groups]
+        schema_group = [VKGroupSchema.model_validate(
+            group) for group in groups]
     return schema_group
 
 
@@ -34,7 +42,7 @@ def create(group: VKGroup) -> VKGroup:
     with Session(engine) as session:
         session.add(orm_group)
         session.commit()
-        return VKGroup.from_orm(orm_group)
+        return VKGroup.model_validate(orm_group)
 
 
 # def delete(group: VKGroup) -> bool:

@@ -1,5 +1,5 @@
 from fastapi_app.data import position as data
-from fastapi_app.model.position import Position_, Position
+from fastapi_app.model.vkgroup import Position_, Position
 
 
 def create_position(position: Position_) -> Position_:

@@ -2,7 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import joinedload, Session
 
 from .init import engine
-from fastapi_app.model.position import Position_, Position
+from fastapi_app.model.vkgroup import Position_, Position
 from fastapi_app.ormmodel.vkgroup import Position as OrmPosition
 
 
