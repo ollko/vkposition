@@ -36,6 +36,7 @@ class VKGroup(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     vkgroup_id: int
     name: str
+    avg_position: int
 
 
 class VKGroupSchema(VKGroup):

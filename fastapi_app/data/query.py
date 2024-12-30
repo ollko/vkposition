@@ -17,7 +17,7 @@ def get_one(query_id: int) -> Query:
                 )
         query = session.scalars(stmt).unique().first()
         if query:
-            return QuerySchema.from_orm(query)
+            return QuerySchema.model_validate(query)
         return None
 
 
@@ -25,7 +25,7 @@ def get_all() -> list[QuerySchema]:
     with Session(engine) as session:
         stmt = select(OrmQuery).options(joinedload(OrmQuery.vkgroups))
         queries = session.scalars(stmt).unique().all()
-        schema_query = [QuerySchema.from_orm(query) for query in queries]
+        schema_query = [QuerySchema.model_validate(query) for query in queries]
     return schema_query
 
 
@@ -34,4 +34,4 @@ def create(query: Query) -> Query:
     with Session(engine) as session:
         session.add(orm_query)
         session.commit()
-        return Query.from_orm(orm_query)
+        return Query.model_validate(orm_query)
